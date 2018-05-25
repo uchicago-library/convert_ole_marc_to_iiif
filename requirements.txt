@@ -1,0 +1,3 @@
+https://github.com/uchicago-library/marc2iiif/tarball/master#egg=marc2iiif
+https://github.com/uchicago-library/pyiiif/tarball/master#egg=pyiiif
+ 
