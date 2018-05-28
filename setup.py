@@ -20,6 +20,7 @@ setup(
     include_package_data=True,
     url='https://github.com/uchicago-library/convert_ole_marc_to_iiif',
     dependency_links = [
+        'https://github.com/uchicago-library/marc_field_lookup/tarball/master#egg=marcFieldsLookup',
         'https://github.com/uchicago-library/marc2iiif/tarball/master#egg=marc2iiif',
         'https://github.com/uchicago-library/pyiiif/tarball/master#egg=pyiiif',
    ],
