@@ -7,7 +7,7 @@ def readme():
 
 
 setup(
-    name="findMarcRecordsInOLE",
+    name="convertOLERecords2IIIF",
     description="A CLI application to take exported OLE MARC XML records and convert them to IIIF.",
     version="0.0.1",
     long_description=readme(),
