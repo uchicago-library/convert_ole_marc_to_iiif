@@ -29,11 +29,13 @@ class ExtractIIIFImageLinks(Action):
 def main():
     try:
         arguments = ArgumentParser(description="A tool to take an OLE exported MARC XML record and convert it to IIIF")
-        arguments.add_argument('record', type=str, action='store', help="The path to the XML record that you want to convert to IIIF")
-        arguments.add_argument("--metadata-only", action='store_true', help="An optional field to flag whether to save full IIIF records with sequences or just save the metadata portion", default=False)
-        arguments.add_argument("--image-manifest", type=str, action='store', help="A plain text file containing a list of IIIF image links to include in the IIIF outputted record")
+        record_arg = arguments.add_argument('record', type=str, action='store', help="The path to the XML record that you want to convert to IIIF")
+        incl_imgs_args = arguments.add_argument("--include-images", action='store_true', help="An optional field to indicate whether to include a Sequence with images in outputted record. Default is False.", default=False)
+        img_manifest_arg = arguments.add_argument("--image-manifest", type=str, action='store', help="A plain text file containing a list of IIIF image links to include in the IIIF outputted record")
         parsed_args = arguments.parse_args()
-
+        if parsed_args.include_images and not parsed_args.image_manifest:
+            raise ArgumentError(incl_imgs_args, "If you want to include images you must also define the image-manifest argument")
+        print(parsed_args)
         return 0
     except KeyboardInterrupt:
         return 131
