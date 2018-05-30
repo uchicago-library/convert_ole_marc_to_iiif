@@ -4,14 +4,13 @@ import json
 from marc2iiif.classes import IIIFMetadataBoxFromMarc, IIIFMetadataField, IIIFDataExtractionFromMarc
 from marclookup.lookup import MarcField
 from os.path import exists
-from pyiiif.pres_api.twodotone.records import Annotation, Sequence, Canvas, ImageResource
 import requests
 from sys import stdout
 from urllib.parse import urlparse
 from uuid import uuid4
 from xml.etree import ElementTree
 
-__version__ = "0.0.1"
+__version__ = "1.0.0"
 __author__ = "Tyler Danstrom"
 
 class ExtractIIIFImageLinks(Action):
@@ -82,41 +81,9 @@ def main():
     try:
         arguments = ArgumentParser(description="A tool to take an OLE exported MARC XML record and convert it to IIIF")
         arguments.add_argument('record', type=str, action=TransformOLEXMLRecord, help="The path to the XML record that you want to convert to IIIF")
-        incl_imgs_args = arguments.add_argument("--include_images", action='store_true', help="An optional field to indicate whether to include a Sequence with images in outputted record. Default is False.", default=False)
-        arguments.add_argument("--image_manifest", type=str, action=ExtractIIIFImageLinks, help="A plain text file containing a list of IIIF image links to include in the IIIF outputted record")
         arguments.add_argument("-o", "--output", action='store', type=str, help="A filepath to save the output to. If not absolute it will save in your current working directory")
         parsed_args = arguments.parse_args()
-        if parsed_args.include_images and not parsed_args.image_manifest:
-            raise ArgumentError(incl_imgs_args, "If you want to include images you must also define the image-manifest argument")
-        if parsed_args.image_manifest:
-            count = 0
-            sequence_id = parsed_args.record["@id"] + "/sequence" + "/s" + str(count)
-            new_sequence = Sequence(sequence_id)
-            canvas_list = []
-            for img in parsed_args.image_manifest:
-                canvas_id = parsed_args.record["@id"] + "/canvas" + "/c" + str(count)
-                new_canvas = Canvas(canvas_id)
-                try:
-                    new_canvas.images
-                except ValueError:
-                    new_canvas.images = []
-                url = urlparse(img)
-                if url.path.split('/info.json')[0][0] == '/':
-                    url_path = url.path.split('/info.json')[0][1:]
-                else:
-                    url_path = url.path.split('/info.json')[0]
-                annotation_id = parsed_args.record["@id"] + "/annotation" + "/a" + str(count)
-                an_annotation = Annotation(annotation_id)
-
-                img_resource = ImageResource(url.scheme, url.netloc, "", url_path, "image/jpeg")
-                an_annotation.image = img_resource
-                new_canvas.images = [an_annotation]
-                canvas_list.append(new_canvas)
-                count += 1
-            new_sequence.canvases = canvas_list
-            record = parsed_args.record["sequences"] = [new_sequence.to_dict()]
-        else:
-            record = parsed_args.record
+        record = parsed_args.record
         if parsed_args.output and not exists(parsed_args.output):
             json.dump(parsed_args.record, open(parsed_args.output, 'w', encoding="utf-8"), indent=4)
         else:

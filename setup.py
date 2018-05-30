@@ -9,7 +9,7 @@ def readme():
 setup(
     name="convertOLERecords2IIIF",
     description="A CLI application to take exported OLE MARC XML records and convert them to IIIF.",
-    version="0.0.1",
+    version="1.0.0",
     long_description=readme(),
     author="Tyler Danstrom",
     author_email="tdanstrom@uchicago.edu",
@@ -22,7 +22,6 @@ setup(
     dependency_links = [
         'https://github.com/uchicago-library/marc_field_lookup/tarball/master#egg=marcFieldsLookup',
         'https://github.com/uchicago-library/marc2iiif/tarball/master#egg=marc2iiif',
-        'https://github.com/uchicago-library/pyiiif/tarball/master#egg=pyiiif',
    ],
     entry_points = {
         'console_scripts': [
