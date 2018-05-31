@@ -83,7 +83,6 @@ def main():
         arguments.add_argument('record', type=str, action=TransformOLEXMLRecord, help="The path to the XML record that you want to convert to IIIF")
         arguments.add_argument("-o", "--output", action='store', type=str, help="A filepath to save the output to. If not absolute it will save in your current working directory")
         parsed_args = arguments.parse_args()
-        record = parsed_args.record
         if parsed_args.output and not exists(parsed_args.output):
             json.dump(parsed_args.record, open(parsed_args.output, 'w', encoding="utf-8"), indent=4)
         else:
